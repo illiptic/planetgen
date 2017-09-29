@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const express = require('express')
 const bodyParser = require('body-parser')
 
@@ -10,8 +11,9 @@ app.get('/', function (req, res) {
   res.send(elevation())
 })
 
-app.get('/:seed', function (req, res) {
-  res.send(elevation(req.params.seed))
+app.post('/', function (req, res) {
+  let params = _.pickBy(req.body, v => !!v)
+  res.send(elevation(params))
 })
 
 app.listen(9285, function () {
