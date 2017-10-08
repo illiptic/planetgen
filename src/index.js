@@ -1,4 +1,3 @@
-const elevation = require('./elevation.js')
-const printMap = require('./printMap.js')
+const server = require('./server.js')
 
-printMap(elevation({seed: 34587, iterations: 1000}))
+server.run()
