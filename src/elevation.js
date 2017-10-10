@@ -2,7 +2,9 @@ const MT = require('mersenne-twister')
 const _ = require('lodash')
 const {floor, min, max, round} = Math
 
-module.exports = function elevation ({seed = 10, iterations = 250, width = 180}) {
+const smooth = require('./gaussianBlur.js')
+
+module.exports = function elevation ({seed = 10, iterations = 250, width = 180, smoothing = 0}) {
   const generator = new MT(seed)
 
   let wFunc = (width === 'random' ?
@@ -17,6 +19,12 @@ module.exports = function elevation ({seed = 10, iterations = 250, width = 180})
 
   for (let i = 0; i < iterations; i++) {
     splitAndRaise({generator, wFunc, map})
+  }
+
+  if (smoothing && smoothing <= 5) {
+      for (let i = 0; i < smoothing; i++) {
+        map = smooth(map)
+      }
   }
 
   let hist = _.keys(_.countBy(_.flatMap(map, _.values)))
